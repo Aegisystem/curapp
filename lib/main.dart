@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Curapp',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.cyan,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Curapp'),
     );
   }
 }
@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -95,20 +96,31 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 120.0),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  new BoxShadow(
+                    color: Colors.black54,
+                    offset: Offset(4.0, 7.0),
+                    blurRadius: 3.0,
+                  )
+                ]
+              ),
+              child: Image(
+                image: NetworkImage('https://i.pinimg.com/originals/dc/53/92/dc539209734c3ec8ed8e7eb758220adf.jpg'),
+                fit: BoxFit.fill,
+                color: Colors.black54,
+                colorBlendMode: BlendMode.darken,
+              ),
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.account_circle),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
