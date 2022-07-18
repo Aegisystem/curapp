@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'audio.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Curapp',
+      title: 'Evangelio y Familia',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -22,9 +23,8 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.cyan,
       ),
-      home: const MyHomePage(title: 'Curapp'),
+      home: const MyHomePage(title: ''),
     );
   }
 }
@@ -48,18 +48,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,58 +58,63 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Color.fromARGB(216, 215, 249, 255),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 120.0),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  new BoxShadow(
-                    color: Colors.black54,
-                    offset: Offset(4.0, 7.0),
-                    blurRadius: 3.0,
-                  )
-                ]
+            Text('Evangelio y Familia',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                fontSize: 26,
               ),
-              child: Image(
-                image: NetworkImage('https://i.pinimg.com/originals/dc/53/92/dc539209734c3ec8ed8e7eb758220adf.jpg'),
-                fit: BoxFit.fill,
-                color: Colors.black54,
-                colorBlendMode: BlendMode.darken,
-              ),
-            )
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text('Aquí debe incluír una descripción del evangelio del día',
+            style: TextStyle(
+              fontStyle: FontStyle.italic
+            ),
+            ),
+            SizedBox(
+              height: 80,
+            ),
+            _imagen(),
+            audio(),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.account_circle),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+  _imagen(){
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 350,
+        margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          image: const DecorationImage(
+              image: NetworkImage('https://i.pinimg.com/originals/dc/53/92/dc539209734c3ec8ed8e7eb758220adf.jpg'),
+              fit: BoxFit.cover,
+          ),
+          boxShadow: [BoxShadow(
+              color: Colors.black54,
+              offset: Offset(4.0, 7.0),
+              blurRadius: 3.0,
+            )],
+        ),
+      ),
     );
   }
 }
