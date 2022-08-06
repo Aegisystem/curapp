@@ -25,8 +25,8 @@ class _audio extends State<audio> {
 
   Widget build(BuildContext context) => Container(
     height: 200,
-    child: Padding(
-      padding: const EdgeInsets.all(20),
+    child: Expanded(
+      //padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -37,6 +37,11 @@ class _audio extends State<audio> {
             onChanged: (value) async{
               final position = Duration(seconds: value.toInt());
               await audioPlayer.seek(position);
+
+              audioPlayer.resume();
+              setState((){
+                playing = true;
+              });
             },
           ),
           Padding(

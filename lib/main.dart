@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'audio.dart';
+import 'connection.dart';
 
 void main() {
   runApp(const MyApp());
@@ -59,18 +60,21 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       backgroundColor: Color.fromARGB(216, 215, 249, 255),
-      appBar: AppBar(
+      /*appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-      ),
+      ),*/
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
           children: <Widget>[
+            SizedBox(
+              height: 40,
+            ),
             Text('Evangelio y Familia',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -79,40 +83,46 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
-            Text('Aquí debe incluír una descripción del evangelio del día',
-            style: TextStyle(
-              fontStyle: FontStyle.italic
-            ),
+            Text('Aquí debe incluír una descripción del evangelio del día, esto es una sobre extensión del texto para asegurarme de cómo está, y cómo se comporta el widget al momento de agregar una gran cantidad de caracteres',
+              style: TextStyle(
+                  fontStyle: FontStyle.italic
+              ),
             ),
             SizedBox(
-              height: 80,
+              height: 30,
             ),
-            _imagen(),
+            _image(),
             audio(),
           ],
         ),
       ),
     );
   }
-  _imagen(){
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+  _image() async {
+    Data url = new Data('', '', '', '', '', '', '', '', '', '', '');
+    String link = await url.imageLink();
+    print(link);
+    return Expanded(
+      //padding: const EdgeInsets.all(8.0),
       child: Container(
         height: 350,
-        margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+        margin: EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           image: const DecorationImage(
-              image: NetworkImage('https://i.pinimg.com/originals/dc/53/92/dc539209734c3ec8ed8e7eb758220adf.jpg'),
-              fit: BoxFit.cover,
+            //image: NetworkImage('https://i.pinimg.com/originals/dc/53/92/dc539209734c3ec8ed8e7eb758220adf.jpg'),
+            image: NetworkImage('https://e9pgx4s3.directus.app/assets/03687d42-9e25-4669-b501-39c9fd4f3fb0'),
+            fit: BoxFit.cover,
           ),
-          boxShadow: [BoxShadow(
-              color: Colors.black54,
-              offset: Offset(4.0, 7.0),
-              blurRadius: 3.0,
-            )],
+          boxShadow: [
+            BoxShadow(
+            color: Colors.black54,
+            offset: Offset(4.0, 7.0),
+            blurRadius: 3.0,
+            )
+          ],
         ),
       ),
     );
