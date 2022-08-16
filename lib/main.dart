@@ -15,22 +15,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Evangelio y Familia',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-      ),
+      theme: ThemeData(),
       home: const MyHomePage(title: ''),
     );
   }
@@ -38,15 +27,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -64,24 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       backgroundColor: const Color.fromARGB(250, 250, 250, 250),
-      /*appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-      ),*/
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: buildTodayGospelWidget(),
         ),
       );
@@ -138,10 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
   _image(Gospel gospel)  {
-    //String link = await url.imageLink();
-    //print(link);
-    String url = 'https://e9pgx4s3.directus.app/assets/${gospel.image}';
-    print(url + '? Hello World');
+    String url = 'https://${PRODUCTION_BASEPATH}/assets/${gospel.image}';
 
     return Expanded(
       //padding: const EdgeInsets.all(8.0),
@@ -151,7 +113,6 @@ class _MyHomePageState extends State<MyHomePage> {
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           image: DecorationImage(
-          //image: NetworkImage('https://i.pinimg.com/originals/dc/53/92/dc539209734c3ec8ed8e7eb758220adf.jpg'),
             image: CachedNetworkImageProvider(url),
             fit: BoxFit.cover,
           ),
@@ -162,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _getFormattedDateWidget (Gospel gospel)  {
     final DateTime date = gospel.date;
-    final String formattedDate = toBeginningOfSentenceCase('${DateFormat.EEEE(LOCALE_ES).format(date)} '
+    final String formattedDate = toBeginningOfSentenceCase('${DateFormat.EEEE(LOCALE_ES).format(date)}, '
         '${DateFormat.d(LOCALE_ES).format(date)} de ${DateFormat.MMMM(LOCALE_ES).format(date)}'
         ' de ${DateFormat.y(LOCALE_ES).format(date)}') ?? '';
     return Padding(

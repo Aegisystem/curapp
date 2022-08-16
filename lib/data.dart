@@ -4,6 +4,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+const String PRODUCTION_BASEPATH = ('e9pgx4s3.directus.app');
+
 GetGospelsResponse dataFromJson(String str) => GetGospelsResponse.fromJson(json.decode(str));
 
 String dataToJson(GetGospelsResponse data) => json.encode(data.toJson());
@@ -60,7 +62,7 @@ class Gospel {
   };
 }
 Future<GetGospelsResponse> getGospel() async {
-  var url = Uri.https('e9pgx4s3.directus.app', '/items/gospels',
+  var url = Uri.https(PRODUCTION_BASEPATH, '/items/gospels',
       {'filter[date][_lte]':'2022-07-12', 'sort' : '-date', 'limit' : '1'});
   final resp = await http.get(url);
   return dataFromJson(resp.body);

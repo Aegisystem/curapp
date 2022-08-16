@@ -94,7 +94,7 @@ class _Audio extends State<Audio> {
   }
 
   Future setAudio(Gospel gospel) async {
-    String url = 'https://e9pgx4s3.directus.app/assets/${gospel.audio}';
+    String url = 'https://${PRODUCTION_BASEPATH}/assets/${gospel.audio}';
     audioPlayer.setSourceUrl(url);
     Duration songDuration = await audioPlayer.getDuration() ?? Duration.zero;
 
