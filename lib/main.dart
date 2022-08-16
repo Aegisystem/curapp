@@ -1,6 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 import 'audio.dart';
-import 'connection.dart';
+import 'data.dart';
+
+const String LOCALE_ES = 'es';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +57,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting(LOCALE_ES);
+  }
+
+  @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -59,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      backgroundColor: Color.fromARGB(216, 215, 249, 255),
+      backgroundColor: const Color.fromARGB(250, 250, 250, 250),
       /*appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -70,61 +82,90 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 40,
-            ),
-            Text('Evangelio y Familia',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                fontSize: 26,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text('Aquí debe incluír una descripción del evangelio del día, esto es una sobre extensión del texto para asegurarme de cómo está, y cómo se comporta el widget al momento de agregar una gran cantidad de caracteres',
-              style: TextStyle(
-                  fontStyle: FontStyle.italic
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            _image(),
-            audio(),
-          ],
+        child: buildTodayGospelWidget(),
         ),
-      ),
-    );
+      );
   }
-  _image() async {
-    Data url = new Data('', '', '', '', '', '', '', '', '', '', '');
-    String link = await url.imageLink();
-    print(link);
-    return Expanded(
-      //padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 350,
-        margin: EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          image: const DecorationImage(
-            //image: NetworkImage('https://i.pinimg.com/originals/dc/53/92/dc539209734c3ec8ed8e7eb758220adf.jpg'),
-            image: NetworkImage('https://e9pgx4s3.directus.app/assets/03687d42-9e25-4669-b501-39c9fd4f3fb0'),
-            fit: BoxFit.cover,
-          ),
-          boxShadow: [
-            BoxShadow(
-            color: Colors.black54,
-            offset: Offset(4.0, 7.0),
-            blurRadius: 3.0,
-            )
-          ],
-        ),
-      ),
+
+  buildTodayGospelWidget() {
+    return FutureBuilder<GetGospelsResponse>(
+        future: getDataIDs(),
+        builder: (BuildContext context, AsyncSnapshot<GetGospelsResponse> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+                child: const CircularProgressIndicator()
+            );
+          } else {
+            final Gospel todayGospel = snapshot.data!.data[0];
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Evangelio y Familia',
+                    style: GoogleFonts.greatVibes(
+                      fontSize: 38,
+                      color: const Color.fromARGB(255, 45, 108, 163),
+                      )
+                    ),
+                  ]
+                ),
+                _getFormattedDateWidget(todayGospel),
+
+                Text(todayGospel.headline,
+                  style: GoogleFonts.merriweather(
+                      fontSize: 18,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                _image(todayGospel),
+                Audio(todayGospel)
+              ],
+            );
+          }
+        },
     );
   }
 }
+  _image(Gospel gospel)  {
+    //String link = await url.imageLink();
+    //print(link);
+    String url = 'https://e9pgx4s3.directus.app/assets/${gospel.image}';
+    print(url + '? Hello World');
+
+    return Expanded(
+      //padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 50,
+        margin: const EdgeInsets.fromLTRB(35.0, 0, 35.0, 0),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+          //image: NetworkImage('https://i.pinimg.com/originals/dc/53/92/dc539209734c3ec8ed8e7eb758220adf.jpg'),
+            image: CachedNetworkImageProvider(url),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+
+  _getFormattedDateWidget (Gospel gospel)  {
+    final DateTime date = gospel.date;
+    final String formattedDate = toBeginningOfSentenceCase('${DateFormat.EEEE(LOCALE_ES).format(date)} '
+        '${DateFormat.d(LOCALE_ES).format(date)} de ${DateFormat.MMMM(LOCALE_ES).format(date)}'
+        ' de ${DateFormat.y(LOCALE_ES).format(date)}') ?? '';
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(formattedDate,
+        style: GoogleFonts.merriweather(
+          fontSize: 18
+        ),
+      )
+    );
+  }
