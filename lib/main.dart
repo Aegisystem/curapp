@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   buildTodayGospelWidget() {
     return FutureBuilder<GetGospelsResponse>(
-        future: getDataIDs(),
+        future: getGospel(),
         builder: (BuildContext context, AsyncSnapshot<GetGospelsResponse> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -103,8 +103,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 40,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    Image(
+                      image: AssetImage('assets/images/icon.png'),
+                      alignment: Alignment.topLeft,
+                      height: 50,
+                    ),
                     Text('Evangelio y Familia',
                     style: GoogleFonts.greatVibes(
                       fontSize: 38,

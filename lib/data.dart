@@ -59,7 +59,7 @@ class Gospel {
     "image": image,
   };
 }
-Future<GetGospelsResponse> getDataIDs() async {
+Future<GetGospelsResponse> getGospel() async {
   var url = Uri.https('e9pgx4s3.directus.app', '/items/gospels',
       {'filter[date][_lte]':'2022-07-12', 'sort' : '-date', 'limit' : '1'});
   final resp = await http.get(url);
