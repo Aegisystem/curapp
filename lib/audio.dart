@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'data.dart';
 
-class audio extends StatefulWidget {
+class Audio extends StatefulWidget {
+  Gospel gospel;
+
+  Audio(this.gospel);
+
   @override
-  _audio createState() => _audio();
+  _Audio createState() => _Audio(this.gospel);
   }
 
-class _audio extends State<audio> {
+class _Audio extends State<Audio> {
+  Gospel gospel;
   final audioPlayer = AudioPlayer();
   bool playing = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
-  @override
+  _Audio(this.gospel);
+
   void initState()  {
     super.initState();
-    setAudio();
+    setAudio(this.gospel);
   }
 
   @override
@@ -25,8 +32,8 @@ class _audio extends State<audio> {
 
   Widget build(BuildContext context) => Container(
     height: 200,
-    child: Padding(
-      padding: const EdgeInsets.all(20),
+    child: Expanded(
+      //padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -37,6 +44,11 @@ class _audio extends State<audio> {
             onChanged: (value) async{
               final position = Duration(seconds: value.toInt());
               await audioPlayer.seek(position);
+
+              audioPlayer.resume();
+              setState((){
+                playing = true;
+              });
             },
           ),
           Padding(
@@ -81,8 +93,8 @@ class _audio extends State<audio> {
     return [if(duration.inHours>0) hours, minutes, seconds,].join(':');
   }
 
-  Future setAudio() async {
-    String url = 'https://e9pgx4s3.directus.app/assets/2e896ab9-4b3d-46a1-aa39-17c6c31ed3a6';
+  Future setAudio(Gospel gospel) async {
+    String url = 'https://${PRODUCTION_BASEPATH}/assets/${gospel.audio}';
     audioPlayer.setSourceUrl(url);
     Duration songDuration = await audioPlayer.getDuration() ?? Duration.zero;
 
