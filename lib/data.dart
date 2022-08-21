@@ -1,10 +1,6 @@
-// To parse this JSON data, do
-//
-//     final data = dataFromJson(jsonString);
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-
-const String PRODUCTION_BASEPATH = ('e9pgx4s3.directus.app');
 
 GetGospelsResponse dataFromJson(String str) => GetGospelsResponse.fromJson(json.decode(str));
 
@@ -62,7 +58,7 @@ class Gospel {
   };
 }
 Future<GetGospelsResponse> getGospel() async {
-  var url = Uri.https(PRODUCTION_BASEPATH, '/items/gospels',
+  var url = Uri.https(dotenv.env['BASEPATH']??'', '/items/gospels',
       {'filter[date][_lte]':'2022-07-12', 'sort' : '-date', 'limit' : '1'});
   final resp = await http.get(url);
   return dataFromJson(resp.body);
