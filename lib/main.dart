@@ -4,12 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'audio.dart';
 import 'data.dart';
 
 const String LOCALE_ES = 'es';
 
-void main() {
+Future main() async {
+  await dotenv.load(fileName: '.env');
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
@@ -106,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
   _image(Gospel gospel)  {
-    String url = 'https://${PRODUCTION_BASEPATH}/assets/${gospel.image}';
+    String url = 'https://${dotenv.env['BASEPATH']??''}/assets/${gospel.image}';
 
     return Flexible(
       fit: FlexFit.tight,
