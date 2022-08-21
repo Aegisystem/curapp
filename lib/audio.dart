@@ -28,8 +28,8 @@ class _Audio extends State<Audio> {
 
   @override
   void dispose()  {
-    super.dispose();
     audioPlayer.dispose();
+    super.dispose();
   }
 
   Widget build(BuildContext context) => Flexible(
@@ -45,7 +45,7 @@ class _Audio extends State<Audio> {
               final position = Duration(seconds: value.toInt());
               await audioPlayer.seek(position);
 
-              audioPlayer.resume();
+              await audioPlayer.resume();
               setState((){
                 playing = true;
               });
