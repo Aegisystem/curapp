@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Image(
+                    const Image(
                       image: AssetImage('assets/images/icon.png'),
                       alignment: Alignment.topLeft,
                       height: 50,
