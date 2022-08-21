@@ -20,6 +20,7 @@ class _Audio extends State<Audio> {
 
   _Audio(this.gospel);
 
+  @override
   void initState()  {
     super.initState();
     setAudio(this.gospel);
@@ -27,12 +28,12 @@ class _Audio extends State<Audio> {
 
   @override
   void dispose()  {
+    super.dispose();
     audioPlayer.dispose();
   }
 
-  Widget build(BuildContext context) => Container(
-    height: 200,
-    child: Expanded(
+  Widget build(BuildContext context) => Flexible(
+      fit: FlexFit.tight,
       //padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -82,8 +83,7 @@ class _Audio extends State<Audio> {
           ),
         ],
       )
-    ),
-  );
+    );
   String formatTime(Duration duration)  {
     String twoDigits(int n) => n.toString().padLeft(2,'0');
     final hours = twoDigits(duration.inHours);
