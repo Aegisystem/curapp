@@ -3,12 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'audio.dart';
 import 'data.dart';
 
 const String LOCALE_ES = 'es';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
+  );
   runApp(const MyApp());
 }
 
@@ -46,10 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(250, 250, 250, 250),
-      body: Center(
-        child: buildTodayGospelWidget(),
-        ),
-      );
+      body: buildTodayGospelWidget(),
+    );
   }
 
   buildTodayGospelWidget() {
@@ -93,9 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   height: 30,
                 ),
-                _image(todayGospel),
-                Audio(todayGospel)
-              ],
+                  _image(todayGospel),
+                  Audio(todayGospel)
+              ]
             );
           }
         },
@@ -105,16 +108,16 @@ class _MyHomePageState extends State<MyHomePage> {
   _image(Gospel gospel)  {
     String url = 'https://${PRODUCTION_BASEPATH}/assets/${gospel.image}';
 
-    return Expanded(
-      //padding: const EdgeInsets.all(8.0),
+    return Flexible(
+      fit: FlexFit.tight,
       child: Container(
         height: 50,
-        margin: const EdgeInsets.fromLTRB(35.0, 0, 35.0, 0),
+        margin: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url),
-            fit: BoxFit.cover,
+            fit: BoxFit.scaleDown,
           ),
         ),
       ),
