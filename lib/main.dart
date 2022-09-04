@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
           } else {
             final Gospel todayGospel = snapshot.data!.data[0];
             return Column(
+              mainAxisAlignment:MainAxisAlignment.spaceEvenly,
               children: [
                 const SizedBox(
                   height: 40,
@@ -121,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           image: DecorationImage(
             image: CachedNetworkImageProvider(url),
-            fit: BoxFit.scaleDown,
+            fit: BoxFit.contain,
           ),
         ),
       ),
