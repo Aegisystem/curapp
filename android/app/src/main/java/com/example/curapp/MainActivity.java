@@ -1,4 +1,4 @@
-package com.example.curapp;
+package com.aegis.gospels;
 
 import io.flutter.embedding.android.FlutterActivity;
 
