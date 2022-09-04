@@ -37,6 +37,7 @@ class _Audio extends State<Audio> {
       fit: FlexFit.tight,
       //padding: const EdgeInsets.all(20),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Slider.adaptive(
             min: 0,
