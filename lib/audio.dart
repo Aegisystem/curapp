@@ -20,9 +20,7 @@ class _Audio extends State<Audio> {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
-  _Audio(this.gospel) {
-    setAudio(gospel);
-  }
+  _Audio(this.gospel);
 
   @override
   void initState()  {
@@ -52,7 +50,6 @@ class _Audio extends State<Audio> {
                   max: 1,
                   value: _currentValue(),
                   onChanged: (value) async{
-                    print(value);
                     final position = Duration(seconds: (value * duration.inSeconds.toDouble()).toInt());
                     await audioPlayer.seek(position);
 
@@ -115,6 +112,7 @@ class _Audio extends State<Audio> {
     this.audioPlayer.onDurationChanged.listen((newDuration) {
       setState(() {
         duration = newDuration;
+        audioPlayer.pause();
       });
     });
     this.audioPlayer.onPositionChanged.listen((newPosition) {
