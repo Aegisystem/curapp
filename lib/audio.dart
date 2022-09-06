@@ -111,10 +111,11 @@ class _Audio extends State<Audio> {
     duration = songDuration;
 
     this.audioPlayer.onDurationChanged.listen((newDuration) {
-      setState(() {
-        duration = newDuration;
-        audioPlayer.pause();
-      });
+      if(newDuration.inSeconds.toDouble()!=duration.inSeconds.toDouble()){
+        setState(() {
+          duration = newDuration;
+        });
+      }
     });
     this.audioPlayer.onPositionChanged.listen((newPosition) {
       setState(() {
