@@ -44,7 +44,8 @@ class _Audio extends State<Audio> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
+              Flexible(
+                fit: FlexFit.tight,
                 child:CupertinoSlider(
                   min: 0,
                   max: 1,
