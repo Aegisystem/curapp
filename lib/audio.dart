@@ -106,9 +106,10 @@ class _Audio extends State<Audio> {
 
   Future setAudio(Gospel gospel) async {
     String url = 'https://${dotenv.env['BASEPATH'] ?? ''}/assets/${gospel.audio}';
-    audioPlayer.setSourceUrl(url);
+    await audioPlayer.setSourceUrl(url);
     Duration songDuration = await audioPlayer.getDuration() ?? Duration.zero;
     duration = songDuration;
+    await audioPlayer.pause();
 
     this.audioPlayer.onDurationChanged.listen((newDuration) {
       if(newDuration.inSeconds.toDouble()!=duration.inSeconds.toDouble()){
