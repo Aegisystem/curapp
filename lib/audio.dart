@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,7 +11,7 @@ class Audio extends StatefulWidget {
 
   @override
   _Audio createState() => _Audio(this.gospel);
-  }
+}
 
 class _Audio extends State<Audio> {
   Gospel gospel;
@@ -37,21 +38,30 @@ class _Audio extends State<Audio> {
       fit: FlexFit.tight,
       //padding: const EdgeInsets.all(20),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Slider.adaptive(
-            min: 0,
-            max: duration.inSeconds.toDouble(),
-            value: position.inSeconds.toDouble(),
-            onChanged: (value) async{
-              final position = Duration(seconds: value.toInt());
-              await audioPlayer.seek(position);
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                fit: FlexFit.tight,
+                child:CupertinoSlider(
+                  min: 0,
+                  max: 1,
+                  value: _currentValue(),
+                  onChanged: (value) async{
+                    final position = Duration(seconds: (value * duration.inSeconds.toDouble()).toInt());
+                    await audioPlayer.seek(position);
 
-              await audioPlayer.resume();
-              setState((){
-                playing = true;
-              });
-            },
+                    await audioPlayer.resume();
+                    setState((){
+                      playing = true;
+                    });
+                  },
+                ),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -96,12 +106,14 @@ class _Audio extends State<Audio> {
 
   Future setAudio(Gospel gospel) async {
     String url = 'https://${dotenv.env['BASEPATH'] ?? ''}/assets/${gospel.audio}';
-    audioPlayer.setSourceUrl(url);
+    await audioPlayer.setSourceUrl(url);
     Duration songDuration = await audioPlayer.getDuration() ?? Duration.zero;
+    duration = songDuration;
+    await audioPlayer.pause();
 
     this.audioPlayer.onDurationChanged.listen((newDuration) {
-      setState(() {
-        duration = newDuration;
+        setState(() {
+          duration = newDuration;
       });
     });
     this.audioPlayer.onPositionChanged.listen((newPosition) {
@@ -109,5 +121,10 @@ class _Audio extends State<Audio> {
         position = newPosition;
       });
     });
+  }
+  double _currentValue() {
+    if(duration.inSeconds.toDouble()==0) return 0;
+
+    return position.inSeconds.toDouble()/duration.inSeconds.toDouble();
   }
 }
