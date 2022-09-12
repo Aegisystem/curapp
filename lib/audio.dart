@@ -112,11 +112,9 @@ class _Audio extends State<Audio> {
     await audioPlayer.pause();
 
     this.audioPlayer.onDurationChanged.listen((newDuration) {
-      if(newDuration.inSeconds.toDouble()!=duration.inSeconds.toDouble()){
         setState(() {
           duration = newDuration;
-        });
-      }
+      });
     });
     this.audioPlayer.onPositionChanged.listen((newPosition) {
       setState(() {
