@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 GetGospelsResponse dataFromJson(String str) => GetGospelsResponse.fromJson(json.decode(str));
 
@@ -59,7 +60,13 @@ class Gospel {
 }
 Future<GetGospelsResponse> getGospel() async {
   var url = Uri.https(dotenv.env['BASEPATH']??'', '/items/gospels',
-      {'filter[date][_lte]':'2022-07-12', 'sort' : '-date', 'limit' : '1'});
+      {'filter[date][_lte]':_getTodayDate(), 'sort' : '-date', 'limit' : '1'});
   final resp = await http.get(url);
   return dataFromJson(resp.body);
+}
+
+_getTodayDate() {
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  return formatter.format(now);
 }
