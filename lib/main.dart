@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,9 @@ Future main() async {
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
   );
+  
+  AudioPlayer.global.setGlobalAudioContext(audioContext);
+
   runApp(const MyApp());
 }
 
@@ -143,3 +147,22 @@ class _MyHomePageState extends State<MyHomePage> {
       )
     );
   }
+
+  
+      final AudioContext audioContext = AudioContext(
+        iOS: AudioContextIOS(
+          defaultToSpeaker: true,
+          category: AVAudioSessionCategory.ambient,
+          options: [
+            AVAudioSessionOptions.defaultToSpeaker,
+            AVAudioSessionOptions.mixWithOthers,
+          ],
+        ),
+        android: AudioContextAndroid(
+          isSpeakerphoneOn: true,
+          stayAwake: true,
+          contentType: AndroidContentType.sonification,
+          usageType: AndroidUsageType.assistanceSonification,
+          audioFocus: AndroidAudioFocus.none,
+        ),
+      );
