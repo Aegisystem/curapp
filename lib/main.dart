@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment:MainAxisAlignment.spaceEvenly,
               children: [
                 const SizedBox(
-                  height: 40,
+                  height: 45,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -98,11 +98,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   ]
                 ),
                 _getFormattedDateWidget(todayGospel),
-
-                Text(todayGospel.headline,
-                  style: GoogleFonts.merriweather(
-                      fontSize: 18,
-                  ),
+                Container(
+                  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                    child: Text(
+                      todayGospel.headline,
+                      style: GoogleFonts.merriweather(fontSize: 18),
+                      textAlign: TextAlign.center,
+                    )
                 ),
                 const SizedBox(
                   height: 30,
@@ -150,21 +152,20 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  
-      final AudioContext audioContext = AudioContext(
-        iOS: AudioContextIOS(
-          defaultToSpeaker: true,
-          category: AVAudioSessionCategory.ambient,
-          options: [
-            AVAudioSessionOptions.defaultToSpeaker,
-            AVAudioSessionOptions.mixWithOthers,
-          ],
-        ),
-        android: AudioContextAndroid(
-          isSpeakerphoneOn: true,
-          stayAwake: true,
-          contentType: AndroidContentType.sonification,
-          usageType: AndroidUsageType.assistanceSonification,
-          audioFocus: AndroidAudioFocus.none,
-        ),
-      );
+  final AudioContext audioContext = AudioContext(
+    iOS: AudioContextIOS(
+      defaultToSpeaker: true,
+      category: AVAudioSessionCategory.ambient,
+      options: [
+        AVAudioSessionOptions.defaultToSpeaker,
+        AVAudioSessionOptions.mixWithOthers,
+      ],
+    ),
+    android: AudioContextAndroid(
+      isSpeakerphoneOn: true,
+      stayAwake: true,
+      contentType: AndroidContentType.sonification,
+      usageType: AndroidUsageType.assistanceSonification,
+      audioFocus: AndroidAudioFocus.none,
+    ),
+  );
