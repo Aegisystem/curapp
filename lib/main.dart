@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +22,7 @@ Future main() async {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
   );
   
-  AudioPlayer.global.setGlobalAudioContext(audioContext);
+  if(Platform.isIOS) AudioPlayer.global.setGlobalAudioContext(audioContext);
 
   runApp(const MyApp());
 }
