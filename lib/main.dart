@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:internet_popup/internet_popup.dart';
 
 import 'audio.dart';
 import 'data.dart';
@@ -54,6 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    InternetPopup().initializeCustomWidget(
+      context: context, 
+      widget: CupertinoAlertDialog(
+        title: Text("No hay conexión a internet"),
+        content: Text("Por favor comprueba tu conexión a internet")
+      )
+    );
     initializeDateFormatting(LOCALE_ES);
   }
 
@@ -73,7 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
             return const Center(
                 child: const CircularProgressIndicator()
             );
-          } else {
+          }
+          else {
             final Gospel todayGospel = snapshot.data!.data[0];
             return Column(
               mainAxisAlignment:MainAxisAlignment.spaceEvenly,
