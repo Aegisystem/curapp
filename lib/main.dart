@@ -22,9 +22,12 @@ Future main() async {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
   );
   
-  if(Platform.isIOS) AudioPlayer.global.setGlobalAudioContext(audioContext);
+  if(Platform.isIOS) {
+    AudioPlayer.global.setGlobalAudioContext(audioContext);
+  }
 
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
