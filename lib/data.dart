@@ -5,27 +5,20 @@ import 'package:intl/intl.dart';
 
 GetGospelsResponse dataFromJson(String str) => GetGospelsResponse.fromJson(json.decode(str));
 
-String dataToJson(GetGospelsResponse data) => json.encode(data.toJson());
-
 class GetGospelsResponse {
   GetGospelsResponse({
-    required this.data,
+    required this.items,
   });
 
-  List<Gospel> data;
+  List<Gospel> items;
 
   factory GetGospelsResponse.fromJson(Map<String, dynamic> json) => GetGospelsResponse(
-    data: List<Gospel>.from(json["data"].map((x) => Gospel.fromJson(x))),
+    items: List<Gospel>.from(json["items"].map((item) => Gospel.fromJson(item["fields"], json["includes"]["Asset"]))),
   );
-
-  Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
 }
 
 class Gospel {
   Gospel({
-    required this.id,
     required this.headline,
     required this.date,
     required this.mediaType,
@@ -33,34 +26,33 @@ class Gospel {
     required this.image,
   });
 
-  String id;
   String headline;
   DateTime date;
   String mediaType;
-  String audio;
   String image;
+  String audio;
 
-  factory Gospel.fromJson(Map<String, dynamic> json) => Gospel(
-    id: json["id"],
-    headline: json["headline"],
-    date: DateTime.parse(json["date"]),
-    mediaType: json["media_type"],
-    audio: json["audio"],
-    image: json["image"],
-  );
+  factory Gospel.fromJson(Map<String, dynamic> item, List<dynamic> assetsJson) {
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "headline": headline,
-    "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-    "media_type": mediaType,
-    "audio": audio,
-    "image": image,
-  };
+    final audioAsset = assetsJson.firstWhere((element) => element["sys"]["id"] == item["audio"]["sys"]["id"]);
+    final audioLink = audioAsset["fields"]["file"]["url"];
+
+    final imageAsset = assetsJson.firstWhere((element) => element["sys"]["id"] == item["image"]["sys"]["id"]);
+    final imageLink = imageAsset["fields"]["file"]["url"];
+
+    return Gospel(
+      headline: item["headline"],
+      date: DateTime.parse(item["date"]),
+      mediaType: item["media_type"],
+      audio: audioLink,
+      image: imageLink,
+    );
+  }
 }
+
 Future<GetGospelsResponse> getGospel() async {
-  var url = Uri.https(dotenv.env['BASEPATH']??'', '/items/gospels',
-      {'filter[date][_lte]':_getTodayDate(), 'sort' : '-date', 'limit' : '1'});
+  var url = Uri.https(dotenv.env['BASEPATH']??'', '${dotenv.env['ENVIRONMENT_PATH']??''}entries',
+      {'access_token':dotenv.env['ACCESS_TOKEN'],'content_type':'gospels','fields.date[lte]':_getTodayDate(), 'order' : '-fields.date', 'limit' : '1'});
   final resp = await http.get(url);
   return dataFromJson(resp.body);
 }
