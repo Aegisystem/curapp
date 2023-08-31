@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const CircularProgressIndicator()
             );
           } else {
-            final Gospel todayGospel = snapshot.data!.data[0];
+            final Gospel todayGospel = snapshot.data!.items[0];
             return Column(
               mainAxisAlignment:MainAxisAlignment.spaceEvenly,
               children: [
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
   _image(Gospel gospel)  {
-    String url = 'https://${dotenv.env['BASEPATH']??''}/assets/${gospel.image}';
+    String url = 'https:${gospel.image}';
 
     return Flexible(
       fit: FlexFit.tight,
